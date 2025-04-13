@@ -21,12 +21,12 @@ public class frmPaciente extends javax.swing.JInternalFrame {
 
         contenedor = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        cbxOpcion = new javax.swing.JComboBox<>();
-        txtBuscar = new javax.swing.JTextField();
-        btnBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         grilla = new javax.swing.JTable();
+        btnBuscar = new javax.swing.JButton();
+        txtBuscar = new javax.swing.JTextField();
+        cbxOpcion = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
         btnEliminar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
@@ -51,25 +51,6 @@ public class frmPaciente extends javax.swing.JInternalFrame {
         btnCancelar = new javax.swing.JButton();
         btnGuardar = new javax.swing.JButton();
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("OPCION:");
-        jLabel1.setBorder(new javax.swing.border.MatteBorder(null));
-
-        cbxOpcion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        cbxOpcion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CODIGO", "NOMBRE", "APELLIDO", "CI", "TELEFONO", "CIUDAD", "GMAIL" }));
-        cbxOpcion.setBorder(new javax.swing.border.MatteBorder(null));
-
-        txtBuscar.setBorder(new javax.swing.border.MatteBorder(null));
-
-        btnBuscar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnBuscar.setText("BUSCAR");
-        btnBuscar.setBorder(new javax.swing.border.MatteBorder(null));
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
-            }
-        });
-
         grilla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -82,6 +63,25 @@ public class frmPaciente extends javax.swing.JInternalFrame {
             }
         ));
         jScrollPane1.setViewportView(grilla);
+
+        btnBuscar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnBuscar.setText("BUSCAR");
+        btnBuscar.setBorder(new javax.swing.border.MatteBorder(null));
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+
+        txtBuscar.setBorder(new javax.swing.border.MatteBorder(null));
+
+        cbxOpcion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        cbxOpcion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CODIGO", "NOMBRE", "APELLIDO", "CI", "TELEFONO", "CIUDAD", "GMAIL" }));
+        cbxOpcion.setBorder(new javax.swing.border.MatteBorder(null));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel1.setText("OPCION:");
+        jLabel1.setBorder(new javax.swing.border.MatteBorder(null));
 
         btnEliminar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnEliminar.setText("ELIMINAR");
@@ -361,23 +361,6 @@ public class frmPaciente extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNombreActionPerformed
 
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        String texto = txtBuscar.getText();
-        int valor = Integer.parseInt(txtBuscar.getText());
-        String opcion = cbxOpcion.getSelectedItem().toString();
-        String condicion = "";
-        if (opcion.equals("CODIGO")) {
-            condicion = "where id_paciente = " + valor + "";
-        }
-        grilla.setModel(OabmPaciente.cargarTabla(condicion));
-    }//GEN-LAST:event_btnBuscarActionPerformed
-
-    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        operacion = "agregar";
-        txtCodigo.setText("0");
-        contenedor.setSelectedIndex(1);
-    }//GEN-LAST:event_btnAgregarActionPerformed
-
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         OmodeloPaciente = new modeloPaciente();
         OmodeloPaciente.setId_paciente(Integer.parseInt(txtCodigo.getText()));
@@ -394,14 +377,50 @@ public class frmPaciente extends javax.swing.JInternalFrame {
             if (resultado == true) {
                 JOptionPane.showMessageDialog(null, "REGISTRO INSERTADO");
             }
+        } else if(operacion.equals("modificar")){
+            
+            resultado = OabmPaciente.actualizarRegistro(OmodeloPaciente);
+            
+            JOptionPane.showMessageDialog(null, "Registro Actualizado");
         }
         contenedor.setSelectedIndex(0);
         grilla.setModel(OabmPaciente.cargarTabla(""));
+     
+        
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         System.exit(0);
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        operacion = "agregar";
+        txtCodigo.setText("0");
+        contenedor.setSelectedIndex(1);
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        String texto = txtBuscar.getText();
+        int valor = Integer.parseInt(txtBuscar.getText());
+        String opcion = cbxOpcion.getSelectedItem().toString();
+        String condicion = "";
+        if (opcion.equals("CODIGO")) {
+            condicion = "where id_paciente = " + valor + "";
+        } else if (opcion.equals("NOMBRE")) {
+            condicion = "where nombre like '% " + condicion + " %'";
+        } else if (opcion.equals("APELLIDO")) {
+            condicion = "where apellido like '%" + condicion + "%'";
+        } else if (opcion.equals("CI")) {
+            condicion = "where ci like '%" + condicion + "%'";
+        } else if (opcion.equals("DIRECCION")) {
+            condicion = "where direccion like '%" + condicion + "%'";
+        } else if (opcion.equals("CIUDAD")) {
+            condicion = "where ciudad like '%" + condicion + "%'";
+        } else if (opcion.equals("GMAIL")) {
+            condicion = "where gmail like '%" + condicion + "%'";
+        }
+        grilla.setModel(OabmPaciente.cargarTabla(condicion));
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -437,4 +456,5 @@ public class frmPaciente extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
+
 }
